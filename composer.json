@@ -12,10 +12,14 @@
     ],
     "minimum-stability": "stable",
     "require-dev": {
-        "phpunit/phpunit": "^8.0"
+        "kahlan/kahlan": "^4.5"
     },
     "autoload": {
         "files": [
+            "library/connection.php"
         ]
+    },
+    "scripts": {
+        "test": "kahlan"
     }
 }
