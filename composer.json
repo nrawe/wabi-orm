@@ -17,7 +17,8 @@
     },
     "autoload": {
         "files": [
-            "library/connection.php"
+            "library/connection.php",
+            "library/globals.php"
         ]
     },
     "scripts": {
