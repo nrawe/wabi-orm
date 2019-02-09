@@ -55,11 +55,11 @@ $execute = connect(mysql('localhost', 'root', 'username', 'password'));
 $result = $execute($query, $params);
 
 // You can set this executor function globally, for convenience.
-use function WabiORM\{global_read_connection, global_write_connection};
+use function WabiORM\{global_read, global_write};
 
-global_read_connection($execute);
+global_read($execute);
 
-assert($execute === global_read_connection());
+assert($execute === global_read());
 ```
 
 ### The Model
