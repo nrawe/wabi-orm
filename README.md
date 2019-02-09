@@ -46,7 +46,7 @@ use function WabiORM\{connect, echo_query, middleware, mysql};
 $execute = connect($pdo);
 
 // ... But you can wrap query execution with middleware if you want...
-$execute = connect($pdo, middleware(echo_query()));
+$execute = connect($pdo, [echo_query()]);
 
 // ... And you can use a factory for the connection, too.
 $execute = connect(mysql('localhost', 'root', 'username', 'password'));
