@@ -12,6 +12,7 @@
     ],
     "minimum-stability": "stable",
     "require-dev": {
+        "eloquent/phony-kahlan": "^2.0",
         "kahlan/kahlan": "^4.5"
     },
     "autoload": {
