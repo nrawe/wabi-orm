@@ -13,6 +13,7 @@ use RuntimeException;
  * When called without an argument, this will return the current connection, if
  * available.
  *
+ * @subpackage WabiORM.Globals
  * @param callable|null $connection
  * @return callable|void
  */
@@ -41,6 +42,7 @@ function global_read() {
  * When called without an argument, this will return the current connection, if
  * available.
  *
+ * @subpackage WabiORM.Globals
  * @param callable|null $connection
  * @return callable|void
  */
