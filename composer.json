@@ -1,0 +1,21 @@
+{
+    "name": "nrawe/wabi-orm",
+    "description": "A minimalist, (near) zero-config object-relational mapper",
+    "keywords": ["active record", "micro", "minimalist", "orm"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nick Rawe",
+            "email": "nrawe@reapit.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require-dev": {
+        "phpunit/phpunit": "^8.0"
+    },
+    "autoload": {
+        "files": [
+        ]
+    }
+}
