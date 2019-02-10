@@ -11,10 +11,6 @@ Connect
 Query
 - Add the ability to bind expressions for equality
 - Add the ability to bind expressions for inequality
-- Add the abiltiy to bind expressions for greater than
-- Add the abiltiy to bind expressions for greater than or equal to
-- Add the abiltiy to bind expressions for less than
-- Add the abiltiy to bind expressions for less than or equal to
 - Add documentation
 
 ModelInfo
@@ -32,8 +28,6 @@ ORM
 - Add `insert()`
 - Add `update()`
 - Add `save()`
-- Add `associate()`
-- Add `assign()`
 - Update documentation
 
 Tests
@@ -45,7 +39,14 @@ Version 1.1
 Query
 - Add the ability to strip comments from queries
 - Add the ability to perform conditional sections
+- Add the ability to bind expressions for greater than
+- Add the ability to bind expressions for greater than or equal to
+- Add the ability to bind expressions for less than
+- Add the ability to bind expressions for less than or equal to
 
 ORM
 - Add `has_one_through()`
 - Add `has_many_through()`
+- Add `associate()`
+- Add `assign()`
+- Add `transaction()`
