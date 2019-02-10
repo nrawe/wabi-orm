@@ -19,7 +19,8 @@
         "files": [
             "library/connection.php",
             "library/globals.php",
-            "library/query.php"
+            "library/query.php",
+            "library/utilities.php"
         ]
     },
     "scripts": {
