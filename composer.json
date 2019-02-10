@@ -18,7 +18,8 @@
     "autoload": {
         "files": [
             "library/connection.php",
-            "library/globals.php"
+            "library/globals.php",
+            "library/query.php"
         ]
     },
     "scripts": {
