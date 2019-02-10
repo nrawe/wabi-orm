@@ -16,4 +16,23 @@ describe('q()', function () {
 
         expect($tryer)->toThrow();
     });
+
+    it('replaces equality bindings', function () {
+        [$query, $params] = q('SELECT * FROM a WHERE {{=b}}', ['b' => 1]);
+
+        expect($query)->toEqual('SELECT * FROM a WHERE b = ?');
+        expect($params)->toEqual([1]);
+
+        [$query, $params] = q('SELECT * FROM a WHERE {{=b}}', ['b' => [1, 2]]);
+
+        expect($query)->toEqual('SELECT * FROM a WHERE b in (?, ?)');
+        expect($params)->toEqual([1, 2]);
+    });
+
+    it('replaces inequality bindings', function () {
+        [$query, $params] = q('SELECT * FROM a WHERE {{!b}}', ['b' => 1]);
+
+        expect($query)->toEqual('SELECT * FROM a WHERE b != ?');
+        expect($params)->toEqual([1]);
+    });
 });

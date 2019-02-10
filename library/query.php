@@ -18,6 +18,14 @@ namespace WabiORM;
 const Q_IDENTIFIER_REGEX = '[_a-zA-Z0-9]+';
 
 /**
+ * Represents a regex that can be used to capture bindings.
+ * 
+ * @internal
+ * @subpackage WabiORM.Query
+ */
+const Q_BINDING_REGEX = '/\{\{\s?(=|\!)(' . Q_IDENTIFIER_REGEX . ')\s?\}\}/';
+
+/**
  * Represents a regex that can be used to match raw expressions.
  * 
  * @internal
@@ -40,6 +48,7 @@ const Q_RAW_REGEX = '/\{\!\!\s?(' . Q_IDENTIFIER_REGEX . ')\s?\!\!\}/';
 function q(string $template, array $data): array {
     $processors = [
         process_raw_values($data),
+        process_bindings($data),
     ];
 
     return array_reduce($processors, function ($carry, $processor) {
@@ -51,6 +60,8 @@ function q(string $template, array $data): array {
  * Partial application which can be used to replace raw expressions with their
  * value from the given data set.
  *
+ * @internal
+ * @subpackage WabiORM.Query
  * @param array $data
  * @return callable
  */
@@ -76,6 +87,39 @@ function process_raw_values(array $data): callable {
 }
 
 /**
+ * Partial application which can be used to replace binding expressions with
+ * their value from the given set.
+ *
+ * @internal
+ * @subpackage WabiORM.Query
+ * @param array $data
+ * @return callable
+ */
+function process_bindings(array $data): callable {
+    $replacer = replace(Q_BINDING_REGEX);
+
+    return function (string $query, array $params) use ($data, $replacer) {
+        $query = $replacer($query, function ($matches) use ($data, &$params) {
+            [$expr, $op, $identifier] = $matches;
+            $value = $data[$identifier];
+            
+            if (\is_array($value)) {
+                array_push($params, ...$value);
+
+                return inCondition($identifier, count($value), $op === '!');
+            }
+            
+            $params[] = $value;
+
+            return equalsCondition($identifier, $op === '!');
+        });
+
+        return [$query, $params];
+    };
+}
+
+
+/**
  * Partial application wrapper over preg_replace_callback for convenience.
  *
  * The returned callback can be invoked with a query string and replacement
@@ -94,4 +138,31 @@ function replace(string $regex): callable {
     return function (string $query, callable $handler) use ($regex): string {
         return \preg_replace_callback($regex, $handler, $query);
     };
+}
+
+/**
+ * Returns an 'in' or 'not in' condition for use in queries.
+ *
+ * @internal
+ * @subpackage WabiORM.Query
+ * @param integer $count
+ * @return string
+ */
+function inCondition(string $field, int $placeholders, bool $negate): string {
+    $markers = \trim(repeat('?, ', $placeholders), ', ');
+
+    return $field . ($negate ? ' not in (' : ' in (') . $markers . ')';
+}
+
+/**
+ * Returns an equals or not equals condition for use in queries.
+ *
+ * @internal
+ * @subpackage WabiORM.Query
+ * @param string $field
+ * @param boolean $negate
+ * @return string
+ */
+function equalsCondition(string $field, bool $negate): string {
+    return $field . ($negate ? ' != ?' : ' = ?');
 }
