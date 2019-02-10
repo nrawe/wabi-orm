@@ -135,7 +135,7 @@ which you can probably not know about in most cases.
 
 
 ## Roadmap
-This library is feature complete.
+See [ROADMAP.md](./ROADMAP.md) for details of the planned work.
 
 ## License
 MIT.
