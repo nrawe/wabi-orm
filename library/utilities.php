@@ -52,6 +52,23 @@ function hydrate(string $model, \PDOStatement $stmt): array {
 }
 
 /**
+ * Throws an exception in the event that the given condition is false.
+ * 
+ * The thrown exception will contain the given message.
+ *
+ * @internal
+ * @subpackage WabiORM.Utilities
+ * @param boolean $condition
+ * @param string $message
+ * @return void
+ */
+function invariant(bool $condition, string $message): void {
+    if (! $condition) {
+        throw new RuntimeException('Invariant Violation: ' . $message);
+    }
+}
+
+/**
  * Convert the given string to lower-case.
  * 
  * This is taken from the Illuminate source code.
