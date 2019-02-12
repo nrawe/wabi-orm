@@ -19,7 +19,7 @@
         "files": [
             "library/connection.php",
             "library/globals.php",
-            "library/query.php",
+            "library/q.php",
             "library/utilities.php"
         ]
     },

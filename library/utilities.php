@@ -1,6 +1,10 @@
 <?php
 declare(strict_types=1);
 
+/**
+ * This subpackage provides helper functions used by other parts of the
+ * framework.
+ */
 namespace WabiORM;
 
 /**
@@ -18,6 +22,22 @@ function class_basename($class) {
     $class = is_object($class) ? get_class($class) : $class;
     
     return basename(str_replace('\\', '/', $class));
+}
+
+/**
+ * Wrapper around array_filter for brevity.
+ *
+ * @param array $target
+ * @param callable $discrimiator
+ * @return array
+ */
+function filter(array $target, callable $discrimiator = null): array {
+    // Bonkers, but a PHP warning with strict types if not specified this way.
+    if ($discrimiator) {
+        return \array_filter($target, $discrimiator);
+    }
+
+    return \array_filter($target);
 }
 
 /**
@@ -64,7 +84,7 @@ function hydrate(string $model, \PDOStatement $stmt): array {
  */
 function invariant(bool $condition, string $message): void {
     if (! $condition) {
-        throw new RuntimeException('Invariant Violation: ' . $message);
+        throw new \RuntimeException('Invariant Violation: ' . $message);
     }
 }
 
@@ -81,6 +101,17 @@ function invariant(bool $condition, string $message): void {
  */
 function lower($value) {
     return mb_strtolower($value, 'UTF-8');
+}
+
+/**
+ * Wrapper around array_map for consistency and brevity.
+ *
+ * @param array $target
+ * @param callable $fn
+ * @return array
+ */
+function map(array $target, callable $fn): array {
+    return array_map($fn, $target);
 }
 
 /**
