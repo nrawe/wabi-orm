@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+/**
+ * This subpackage provides helpers for sharing connections.
+ */
 namespace WabiORM;
 
 use RuntimeException;
