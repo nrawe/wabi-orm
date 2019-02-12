@@ -9,6 +9,7 @@ namespace WabiORM;
 /**
  * Attempts to return a model of the given type from the database.
  *
+ * @subpackage WabiORM.ORM
  * @param string $model
  * @param scalar $id
  * @param callable $connection
