@@ -22,6 +22,7 @@
         "files": [
             "library/connection.php",
             "library/globals.php",
+            "library/model.php",
             "library/q.php",
             "library/utilities.php"
         ]
