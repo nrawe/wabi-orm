@@ -62,6 +62,14 @@ Installation is handled via [Composer](https://getcomposer.org):
 $ composer require nrawe/wabi-orm
 ```
 
+## Test
+
+The library ships with a test suite, see [specs](specs/), which can be run by:
+
+```
+$ composer test
+```
+
 ## Documentation
 
 This section documents the advanced usage.
