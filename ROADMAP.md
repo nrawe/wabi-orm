@@ -1,25 +1,29 @@
 Version 1.0
 -----------
 Documentation
-- Break out documentation for the advanced topics
+- ~Break out documentation for the advanced topics~
 
 Connect
 - Ensure that PDO will throw exceptions on error
 - Add a basic query logger middleware as an example
-- Add a mysql connection factory
+- ~Add a mysql connection factory~
 
-Query
-- Add the ability to bind expressions for equality
-- Add the ability to bind expressions for inequality
-- Add documentation
+Q
+- ~Add the ability to bind expressions for equality~
+- ~Add the ability to bind expressions for inequality~
+- ~Add the ability to bind expressions for greater than~
+- ~Add the ability to bind expressions for greater than or equal to~
+- ~Add the ability to bind expressions for less than~
+- ~Add the ability to bind expressions for less than or equal to~
+- ~Add documentation~
 
 ModelInfo
-- Add the abiltity to return default model info
-- Add the abiltity for models to provide their own info
-- Add documentation
+- ~Add the abiltity to return default model info~
+- ~Add the abiltity for models to provide their own info~
+- ~Add documentation~
 
 ORM
-- Add `find_one()`
+- ~Add `find_one()`~
 - Add `find_many()`
 - Add `belongs_to()`
 - Add `belongs_to_many()`
@@ -39,10 +43,6 @@ Version 1.1
 Query
 - Add the ability to strip comments from queries
 - Add the ability to perform conditional sections
-- Add the ability to bind expressions for greater than
-- Add the ability to bind expressions for greater than or equal to
-- Add the ability to bind expressions for less than
-- Add the ability to bind expressions for less than or equal to
 
 ORM
 - Add `has_one_through()`
