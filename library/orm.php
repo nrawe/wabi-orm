@@ -20,6 +20,8 @@ function create(object $model, callable $connection = null): bool {
     $info = model_info($model);
     $properties = \get_object_vars($model);
 
+    unset($properties[$info['primaryKey']]);
+
     $query = q('insert into {*table} ({*fields}) values ({values})', [
         'table' => $info['tableName'],
         'fields' => \array_keys($properties),
