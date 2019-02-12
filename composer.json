@@ -20,9 +20,11 @@
     },
     "autoload": {
         "files": [
-            "library/connection.php",
+            "library/bench.php",
+            "library/connect.php",
             "library/globals.php",
             "library/model.php",
+            "library/orm.php",
             "library/q.php",
             "library/utilities.php"
         ]
