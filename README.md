@@ -25,11 +25,30 @@ us today.
 In all, this is my attempt to find joy in database usage again, and maybe it
 will bring that to you, too. Or not ¯\_(ツ)_/¯
 
-## Basic Usage
+## @Glance
 
-This section details how to get up and running with WabiORM.
+```php
+<?php
 
-### Install
+use function WabiORM\{connect, find_one, global_read, mysql};
+
+$connect = connect(mysql($host, $db, $user, $pwd));
+
+global_read($connect);
+
+class Post {
+    public $id;
+
+    public $title;
+
+    public $content;
+}
+
+$post = find_one(Post::class, 1);
+
+```
+
+## Install
 
 Installation is handled via [Composer](https://getcomposer.org):
 
@@ -37,102 +56,13 @@ Installation is handled via [Composer](https://getcomposer.org):
 $ composer require nrawe/wabi-orm
 ```
 
-### The Connection
+## Documentation
 
-```php
-use function WabiORM\{connect, echo_query, middleware, mysql};
+This section documents the advanced usage.
 
-// By default, you don't have to do anything special...
-$execute = connect($pdo);
-
-// ... But you can wrap query execution with middleware if you want...
-$execute = connect($pdo, [echo_query()]);
-
-// ... And you can use a factory for the connection, too.
-$execute = connect(mysql('localhost', 'root', 'username', 'password'));
-
-// Use the returned function to execute queries with bound parameters.
-$result = $execute($query, $params);
-
-// You can set this executor function globally, for convenience.
-use function WabiORM\{global_read, global_write};
-
-global_read($execute);
-
-assert($execute === global_read());
-```
-
-### The Model
-
-```php
-use function WabiORM\{find_one, find_many};
-
-/**
- * Any plain class can be used as a model, without additional composition or
- * inheritence.
- */
-class User {
-    public $id;
-
-    public $type;
-
-    public function isAdmin(): bool {
-        return $this->type === 'admin';
-    }
-}
-
-// You can then use one of the pre-made finders...
-$user = find_one(User::class, 1);
-$admins = find_many(User::class, ['type' => 'admin']);
-
-// By default, these use the global connections, but can be given a connection
-$user = find_one(User::class, 1, $execute);
-
-if (! $user) {
-    die("Oh, Snap. Not today I'm afraid...");
-}
-
-// As you'd expect, what you get is an instance of the class back:
-if ($user instanceof User) {
-    $user->isAdmin();
-}
-```
-
-### The Relationships
-
-```php
-use function WabiORM\{belongs_to, find_one, has_many};
-
-class User {
-    public $id;
-
-    public function posts() {
-        return has_many(Post::class, $this);
-    }
-}
-
-class Post {
-    public $id;
-
-    public $user_id;
-
-    public function user() {
-        return belongs_to(User::class, $this);
-    }
-}
-
-// 
-$user = find_one(User::class, 1);
-
-// 
-$posts = $user->posts();
-```
-
-## Advanced Usage
-
-The following sections detail some of the more advanced parts of the library,
-which you can probably not know about in most cases.
-
+1. [Using connections](docs/connect.md)
+2. [Working with models](docs/models.md)
+3. [Writing queries with `q()`](docs/queries.md)
 
 ## Roadmap
 See [ROADMAP.md](./ROADMAP.md) for details of the planned work.
