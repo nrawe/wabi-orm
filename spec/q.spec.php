@@ -44,6 +44,9 @@ describe('q()', function () {
             // Lesser processor with single values
             ['where {<a}', ['a' => [1, 2]], 'where (a < ? or a < ?)', [1, 2]],
             ['where {<=a}', ['a' => [1, 2]], 'where (a <= ? or a <= ?)', [1, 2]],
+
+            // Raw value
+            ['from {*a}', ['a' => 'table'], 'from table', []],
         ];
 
         foreach ($cases as [$template, $data, $query, $params]) {

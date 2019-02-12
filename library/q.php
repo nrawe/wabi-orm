@@ -185,6 +185,7 @@ function processors(): array {
     if (! $processors) {
         $processors = [
             'id'   => direct_processor(),
+            '*id'  => raw_processor(),
             '=id'  => equals_processor(false),
             '!id'  => equals_processor(true),
             '>id'  => greater_processor(false),
@@ -287,6 +288,19 @@ function like_processor(bool $before, bool $after): callable {
         });
 
         return compound_condition($identifier, $params, 'like');
+    };
+}
+
+/**
+ * Returns a processor for handling raw binding expressions.
+ *
+ * @internal
+ * @subpackage WabiORM.Q
+ * @return callable
+ */
+function raw_processor(): callable {
+    return function ($identifier, $value) {
+        return [$value, []];
     };
 }
 
