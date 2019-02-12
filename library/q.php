@@ -44,7 +44,7 @@ function are_values_scalar($value): bool {
         return count($filtered) === count($value);
     }
 
-    return is_scalar($value);
+    return is_scalar($value) || is_null($value);
 }
 
 /**
