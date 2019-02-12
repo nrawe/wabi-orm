@@ -25,6 +25,18 @@ function class_basename($class) {
 }
 
 /**
+ * Joins the given items as a string of comma separated values.
+ *
+ * @internal
+ * @subpackage WabiORM.Utilities
+ * @param array $items
+ * @return string
+ */
+function csvise(array $items): string {
+    return trim(join(', ', $items), ', ');
+}
+
+/**
  * Wrapper around array_filter for brevity.
  *
  * @param array $target

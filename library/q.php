@@ -210,6 +210,13 @@ function processors(): array {
  */
 function direct_processor(): callable {
     return function ($identifier, $value) {
+        if (\is_array($value)) {
+            $repeated = repeat('?, ', count($value));
+            $trimmed = trim($repeated, ', ');
+
+            return [$trimmed, $value];
+        }
+
         return ['?', [$value]];
     };
 }
@@ -300,6 +307,10 @@ function like_processor(bool $before, bool $after): callable {
  */
 function raw_processor(): callable {
     return function ($identifier, $value) {
+        if (\is_array($value)) {
+            return [csvise($value), []];
+        }
+
         return [$value, []];
     };
 }

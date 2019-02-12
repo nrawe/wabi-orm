@@ -6,8 +6,11 @@ describe('q()', function () {
 
     it('processes binding flags', function () {
         $cases = [
-            // Direct processor
+            // Direct processor, single value
             ['where {a}', ['a' => 1], 'where ?', [1]],
+
+            // Direct processor, mutliple values
+            ['where {a}', ['a' => [1, 2]], 'where ?, ?', [1, 2]],
 
             // Equality processor with a single value
             ['where {=a}', ['a' => 1], 'where a = ?', [1]],
@@ -45,8 +48,11 @@ describe('q()', function () {
             ['where {<a}', ['a' => [1, 2]], 'where (a < ? or a < ?)', [1, 2]],
             ['where {<=a}', ['a' => [1, 2]], 'where (a <= ? or a <= ?)', [1, 2]],
 
-            // Raw value
+            // Raw processor, single value
             ['from {*a}', ['a' => 'table'], 'from table', []],
+
+            // Raw processor, multiple values
+            ['from {*a}', ['a' => ['table', 'name']], 'from table, name', []],
         ];
 
         foreach ($cases as [$template, $data, $query, $params]) {
