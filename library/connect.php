@@ -17,7 +17,10 @@ use RuntimeException;
 /**
  * Decorates a PDO connection to facilitate middleware during query execution.
  * 
- * @subpackage WabiORM.Connection
+ * @subpackage WabiORM.Connect
+ * @param PDO $connection
+ * @param callable[] $middlewars
+ * @return callable
  */
 function connect(PDO $connection, array $middlewares = []): callable {
     // Ensure that query execution is always handled last.
@@ -36,7 +39,9 @@ function connect(PDO $connection, array $middlewares = []): callable {
  * Returns a new function that acts as a middleware pipeline.
  * 
  * @internal
- * @subpackage WabiORM.Connection
+ * @subpackage WabiORM.Connect
+ * @param callable[] $middlewares
+ * @return callable
  */
 function compose_middleware(callable ...$middlewares): callable {
     $unreachableMiddleware = function () {
@@ -64,15 +69,12 @@ function compose_middleware(callable ...$middlewares): callable {
  * Middleware for connect which performs the execution of a query.
  * 
  * @internal
- * @subpackage WabiORM.Connection
- * @param PDO $connection
- * @param string $query
- * @param array $params
- * @return PDOStatement
+ * @subpackage WabiORM.Connect
+ * @return callable
  */
 function execute_query() {
-    return function(PDO $connection, string $query, array $params): PDOStatement {
-        $statement = $connection->prepare($query);
+    return function(PDO $conn, string $query, array $params): PDOStatement {
+        $statement = $conn->prepare($query);
         $statement->execute($params);
 
         return $statement;
