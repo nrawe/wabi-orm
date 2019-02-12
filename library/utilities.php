@@ -39,6 +39,8 @@ function csvise(array $items): string {
 /**
  * Wrapper around array_filter for brevity.
  *
+ * @internal
+ * @subpackage WabiORM.Utilities
  * @param array $target
  * @param callable $discrimiator
  * @return array
@@ -118,6 +120,8 @@ function lower($value) {
 /**
  * Wrapper around array_map for consistency and brevity.
  *
+ * @internal
+ * @subpackage WabiORM.Utilities
  * @param array $target
  * @param callable $fn
  * @return array
