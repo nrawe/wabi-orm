@@ -48,6 +48,12 @@ $post = find_one(Post::class, 1);
 
 ```
 
+## Features
+
+1. PDO connection middleware
+2. Works with plain classes
+3. Simple, powerful query templates
+
 ## Install
 
 Installation is handled via [Composer](https://getcomposer.org):
