@@ -1,6 +1,13 @@
 <?php
 declare(strict_types=1);
 
+/**
+ * This subpackage provides an API for executing queries against a database
+ * via middleware, allowing the execution process to be augmented easily.
+ * 
+ * For example, logging of query execution time, or modifying the query before
+ * execution, can be broken down into small middlewares.
+ */
 namespace WabiORM;
 
 use PDO;
