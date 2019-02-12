@@ -19,7 +19,7 @@ use PDO;
  * @return \PDO
  */
 function mysql(string $host, string $db, string $user, string $pwd): PDO {
-    $dsn = 'mysql:host='.$host.';dbname='.$schema.';';
+    $dsn = 'mysql:host='.$host.';dbname='.$db.';';
     $options = [
         PDO::ATTR_CASE => PDO::CASE_LOWER,
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
