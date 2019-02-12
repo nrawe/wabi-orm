@@ -37,14 +37,14 @@ function q(string $template, array $data): array {
  * @param mixed $value
  * @return bool
  */
-function are_values_scalar($value): bool {
+function are_values_scalar($value): bool {  
     if (\is_array($value)) {
-        $filtered = filter(map($value, '\is_scalar'));
+        $filtered = filter(map($value, 'WabiORM\is_value_sane'));
 
         return count($filtered) === count($value);
     }
 
-    return is_scalar($value) || is_null($value);
+    return is_value_sane($value);
 }
 
 /**
@@ -106,6 +106,16 @@ function invoke_processor(array $processors, callable $getValue): callable {
 
         return $processors[$processor]($id, $getValue($id));
     };
+}
+
+/**
+ * Returns whether the value can be used inside of a binding.
+ *
+ * @param scalar|null $value
+ * @return boolean
+ */
+function is_value_sane($value): bool {
+    return is_scalar($value) || is_null($value);
 }
 
 /**
