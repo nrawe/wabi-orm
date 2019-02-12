@@ -34,6 +34,23 @@ function create_model(string $model, bool $withConstructor = true): object {
 }
 
 /**
+ * Returns the table name based on the given model.
+ * 
+ * This is a rather naive implementation based on the general convention of
+ * pluralisation.
+ *
+ * @internal 
+ * @subpackage WabiORM.Model
+ * @param string|object $model
+ * @return string
+ */
+function model_default_table_name($model): string {
+    $base = class_basename($model);
+
+    return snake($base) . 's';
+}
+
+/**
  * Helper function which returns an array of meta data ("info") from a model.
  *
  * @internal
@@ -55,6 +72,7 @@ function model_info($model): array {
 
     return [
         'primaryKey' => $override('withPrimaryKey', 'id'),
+        'tableName' => $override('withTableName', model_default_table_name($model)),
     ];
 }
 

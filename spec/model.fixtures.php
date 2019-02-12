@@ -20,4 +20,8 @@ class ModelWithOverrides {
     public function withPrimaryKey(): string {
         return 'overridden';
     }
+
+    public function withTableName(): string {
+        return 'custom_table';
+    }
 }
