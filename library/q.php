@@ -179,6 +179,10 @@ function parse_bindings(string $template, callable $handler): array {
         [$opens, $closes] = next_binding_position($carry);
     }
 
+    if ($carry) {
+        $final .= $carry;
+    }
+
     return [$final, $params];
 }
 
