@@ -168,4 +168,14 @@ function snake($value, $delimiter = '_') {
     return $value;
 }
 
-
+/**
+ * Returns whether the given query executed successfully.
+ *
+ * @internal
+ * @subpackage WabiORM.Utilities
+ * @param \PDOStatement $stmt
+ * @return boolean
+ */
+function was_execution_successful(\PDOStatement $stmt): bool {
+    return $stmt->errorCode() === '00000';
+}

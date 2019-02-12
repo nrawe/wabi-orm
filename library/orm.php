@@ -7,6 +7,29 @@ declare(strict_types=1);
 namespace WabiORM;
 
 /**
+ * Attempts to create the model in the database.
+ *
+ * @subpackage WabiORM.ORM
+ * @param object $model
+ * @param callable $connection
+ * @return boolean
+ */
+function create(object $model, callable $connection = null): bool {
+    $connection = writer($connection);
+
+    $info = model_info($model);
+    $properties = \get_object_vars($model);
+
+    $query = q('insert into {*table} ({*fields}) values ({values})', [
+        'table' => $info['tableName'],
+        'fields' => \array_keys($properties),
+        'values' => \array_values($properties),
+    ]);
+
+    return was_execution_successful($connection(...$query));
+}
+
+/**
  * Attempts to return a model of the given type from the database.
  *
  * @subpackage WabiORM.ORM
@@ -39,4 +62,16 @@ function find_one(string $model, $id, callable $connection = null) {
  */
 function reader(callable $connection = null): callable {
     return $connection ?? global_read();
+}
+
+/**
+ * Yeilds a connection that can be used for writing.
+ *
+ * @internal 
+ * @subpackage WabiORM.ORM
+ * @param callable $connection (optional)
+ * @return callable
+ */
+function writer(callable $connection = null): callable {
+    return $connection ?? global_write();
 }
