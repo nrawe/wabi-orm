@@ -22,7 +22,6 @@ $result = $executor(...q($query, $data));
 Currently, the scope of this is limited to the libraries requirements, but
 sensible extensions - with a clear problem/solution - will be considered.
 
-
 ## Condition shortcuts
 
 **Problem:** when working with queries, it's difficult to handle both single
@@ -143,3 +142,15 @@ q('select * from table where {a%}', ['a' => 'b']);
 q('select * from table where myCondition = {a}', ['a' => 1]);
 ```
 
+## Raw values
+
+**Problem:** sometimes you need to embed a raw value into a query.
+
+**Solution:** while you can use PHP String Interpolation, `q()` provides a
+helper for this to work inside the template itself:
+
+```php
+// query: select * from name
+// params: []
+q('select * from {*table}', ['table' => 'name']);
+```
