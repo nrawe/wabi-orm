@@ -1,7 +1,7 @@
 {
     "name": "nrawe/wabi-orm",
     "description": "A minimalist, (near) zero-config object-relational mapper",
-    "keywords": ["active record", "micro", "minimalist", "orm"],
+    "keywords": ["active-record", "micro", "minimalist", "orm"],
     "type": "library",
     "license": "MIT",
     "authors": [
