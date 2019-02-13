@@ -28,11 +28,10 @@ function global_read() {
         return;
     }
 
-    if (!$reader) {
-        throw new RuntimeException(
-            'global_read(): no connection has been set globally.'
-        );
-    }
+    invariant(
+        is_callable($reader), 
+        'global_read(): no connection has been set globally.'
+    );
 
     return $reader;
 }
@@ -57,11 +56,10 @@ function global_write() {
         return;
     }
 
-    if (!$reader) {
-        throw new RuntimeException(
-            'global_write(): no connection has been set globally.'
-        );
-    }
+    invariant(
+        is_callable($reader), 
+        'global_write(): no connection has been set globally.'
+    );
 
     return $reader;
 }
