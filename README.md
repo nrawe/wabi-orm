@@ -46,12 +46,14 @@ class Post {
 
 $newPost = new Post();
 $newPost->title = 'My first post';
-$newPost->content = 'WabiORM put the fun back into database usage';
+$newPost->content = 'WabiORM put the fun back into database usage!';
 
 $id = save($newPost);
 
 $post = find_one(Post::class, $id);
+$post->title = 'My first post (edited!)';
 
+save($post);
 delete($post);
 
 ```
