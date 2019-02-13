@@ -34,6 +34,20 @@ function create_model(string $model, bool $withConstructor = true): object {
 }
 
 /**
+ * Returns whether the model should be considered to have been persisted.
+ *
+ * @internal
+ * @subpackage WabiORM.Model
+ * @param object $model
+ * @return boolean
+ */
+function is_persisted(object $model): bool {
+    $info = model_info($model);
+
+    return !is_null($model->{$info['primaryKey']});
+}
+
+/**
  * Returns the data currently contained in the model.
  * 
  * This can be configured per-model through the presence of a

@@ -68,6 +68,20 @@ function reader(callable $connection = null): callable {
 }
 
 /**
+ * Attempts to save a model in the database
+ *
+ * @subpackage WabiORM.ORM
+ * @param object $model
+ * @param callable $connection (optional)
+ * @return void
+ */
+function save(object $model, callable $connection = null) {
+    return is_persisted($model)
+        ? update($model, $connection)
+        : create($model, $connection);
+}
+
+/**
  * Attempts to update the given model in the database.
  *
  * @subpackage WabiORM.ORM
