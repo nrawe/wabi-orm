@@ -40,4 +40,20 @@ use.
 
 ## Persistence
 
+WabiORM comes with some basic helpers for persisting data:
 
+```php
+use function WabiORM\{create, delete, update};
+
+$newPost = new Post();
+$newPost->title = 'This is my title';
+
+$newPost->id = create($newPost);
+$newPost->description = 'This is some content!';
+update($newPost);
+
+delete($newPost);
+```
+
+> Note: you can use `save()` to either create or update, based on whether the
+> primary key of the model is null.
