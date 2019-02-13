@@ -72,7 +72,7 @@ function compose_middleware(callable ...$middlewares): callable {
  * @subpackage WabiORM.Connect
  * @return callable
  */
-function execute_query() {
+function execute_query(): callable {
     return function(PDO $conn, string $query, array $params): PDOStatement {
         $statement = $conn->prepare($query);
         $statement->execute($params);
