@@ -17,16 +17,10 @@ namespace WabiORM;
 function create(object $model, callable $connection = null): bool {
     $connection = writer($connection);
 
-    $info = model_info($model);
-    $properties = \get_object_vars($model);
-
-    unset($properties[$info['primaryKey']]);
-
-    $query = q('insert into {*table} ({*fields}) values ({values})', [
-        'table' => $info['tableName'],
-        'fields' => \array_keys($properties),
-        'values' => \array_values($properties),
-    ]);
+    $query = q(
+        'insert into {*table} ({*fields}) values ({values})',
+        model_data_for_insert($model)
+    );
 
     return was_execution_successful($connection(...$query));
 }

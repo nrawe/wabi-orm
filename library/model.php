@@ -34,6 +34,54 @@ function create_model(string $model, bool $withConstructor = true): object {
 }
 
 /**
+ * Returns the data currently contained in the model.
+ * 
+ * This can be configured per-model through the presence of a
+ * `withDataForPersistence` method, which should return an array of key/value
+ * pairs.
+ *
+ * @internal
+ * @subpackage WabiORM.Model
+ * @param object $model
+ * @return array
+ */
+function model_data(object $model): array {
+    $data = \get_object_vars($model);
+
+    if (\method_exists($model, 'withDataForPersistence')) {
+        $data = $model->withDataForPersistence();
+    }
+
+    invariant(
+        \is_array($data),
+        'model_data() was unable to determine the data for the given model'
+    );
+
+    return $data;
+}
+
+/**
+ * Returns a q() compatible data structure for a insert into the database.
+ *
+ * @internal
+ * @subpackage WabiORM.Model
+ * @param object $model
+ * @return array
+ */
+function model_data_for_insert(object $model): array {
+    $info = model_info($model);
+    $data = model_data($model);
+
+    unset($data[$info['primaryKey']]);
+
+    return [
+        'table' => $info['tableName'],
+        'fields' => \array_keys($data),
+        'values' => \array_values($data),
+    ];
+}
+
+/**
  * Returns the table name based on the given model.
  * 
  * This is a rather naive implementation based on the general convention of
