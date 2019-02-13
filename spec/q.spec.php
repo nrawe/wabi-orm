@@ -53,6 +53,9 @@ describe('q()', function () {
 
             // Raw processor, multiple values
             ['from {*a}', ['a' => ['table', 'name']], 'from table, name', []],
+
+            // Splat processor
+            ['set {...a}', ['a' => ['b' => 1, 'c' => 2]], 'set b = ?, c = ?', [1, 2]],
         ];
 
         foreach ($cases as [$template, $data, $query, $params]) {

@@ -198,17 +198,18 @@ function processors(): array {
 
     if (! $processors) {
         $processors = [
-            'id'   => direct_processor(),
-            '*id'  => raw_processor(),
-            '=id'  => equals_processor(false),
-            '!id'  => equals_processor(true),
-            '>id'  => greater_processor(false),
-            '>=id' => greater_processor(true),
-            '<id'  => lesser_processor(false),
-            '<=id' => lesser_processor(true),
-            '%id'  => like_processor(true, false),
-            '%id%' => like_processor(true, true),
-            'id%'  => like_processor(false, true), 
+            'id'    => direct_processor(),
+            '*id'   => raw_processor(),
+            '=id'   => equals_processor(false),
+            '!id'   => equals_processor(true),
+            '>id'   => greater_processor(false),
+            '>=id'  => greater_processor(true),
+            '<id'   => lesser_processor(false),
+            '<=id'  => lesser_processor(true),
+            '%id'   => like_processor(true, false),
+            '%id%'  => like_processor(true, true),
+            'id%'   => like_processor(false, true),
+            '...id' => splat_processor(),
         ];
     }
 
@@ -326,6 +327,32 @@ function raw_processor(): callable {
         }
 
         return [$value, []];
+    };
+}
+
+/**
+ * Returns a processor for handling splat binding expressions.
+ *
+ * @return callable
+ */
+function splat_processor(): callable {
+    return function (string $identifier, $values): array {
+        invariant(
+            is_array($values),
+            '"..." bindings can only be used on arrays'
+        );
+
+        $conditions = [];
+        $params = [];
+
+        foreach ($values as $key => $value) {
+            [$condition, $param] = equals_condition($key, $value, false);
+
+            $conditions[] = $condition;
+            array_push($params, ...$param);
+        }
+
+        return [csvise($conditions), $params];
     };
 }
 

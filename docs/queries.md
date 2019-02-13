@@ -146,6 +146,13 @@ q('select * from table where myCondition = {a}', ['a' => 1]);
 q('insert into table values({a})', ['a' => [1, 2]);
 ```
 
+#### Splat conditions
+```php
+// query: update table set b = ?, c = ?
+// params: [1, 2]
+q('update table set {...a}', ['a' => ['b' => 1, 'c' => 2]]);
+```
+
 ## Raw values
 
 **Problem:** sometimes you need to embed a raw value into a query.
