@@ -30,7 +30,7 @@ will bring that to you, too. Or not ¯\_(ツ)_/¯
 ```php
 <?php
 
-use function WabiORM\{connect, find_one, global_read, mysql};
+use function WabiORM\{connect, delete, find_one, global_read, mysql, save};
 
 $connect = connect(mysql($host, $db, $user, $pwd));
 
@@ -48,9 +48,11 @@ $newPost = new Post();
 $newPost->title = 'My first post';
 $newPost->content = 'WabiORM put the fun back into database usage';
 
-$id = create($newPost);
+$id = save($newPost);
 
 $post = find_one(Post::class, $id);
+
+delete($post);
 
 ```
 
