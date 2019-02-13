@@ -14,7 +14,7 @@ namespace WabiORM;
  * @param callable $connection
  * @return boolean
  */
-function create(object $model, callable $connection = null): bool {
+function create(object $model, callable $connection = null) {
     $connection = writer($connection);
 
     $query = q(
@@ -22,7 +22,14 @@ function create(object $model, callable $connection = null): bool {
         model_data_for_insert($model)
     );
 
-    return was_execution_successful($connection(...$query));
+    $result = $connection(...$query);
+
+    invariant(
+        was_execution_successful($result),
+        'inserting record failed'
+    );
+
+    return last_insert_id($result);
 }
 
 /**
