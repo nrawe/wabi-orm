@@ -30,11 +30,20 @@ will bring that to you, too. Or not ¯\_(ツ)_/¯
 ```php
 <?php
 
-use function WabiORM\{connect, delete, find_one, global_read, mysql, save};
+use function WabiORM\{
+    connect, 
+    delete, 
+    find_one, 
+    global_read, 
+    global_write, 
+    mysql, 
+    save
+};
 
 $connect = connect(mysql($host, $db, $user, $pwd));
 
 global_read($connect);
+global_write($connect);
 
 class Post {
     public $id;
