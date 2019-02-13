@@ -11,7 +11,7 @@ namespace WabiORM;
  *
  * @subpackage WabiORM.ORM
  * @param object $model
- * @param callable $connection
+ * @param callable $connection (optional)
  * @return boolean
  */
 function create(object $model, callable $connection = null) {
@@ -38,7 +38,7 @@ function create(object $model, callable $connection = null) {
  * @subpackage WabiORM.ORM
  * @param string $model
  * @param scalar $id
- * @param callable $connection
+ * @param callable $connection (optional)
  * @return object|null
  */
 function find_one(string $model, $id, callable $connection = null) {
@@ -65,6 +65,25 @@ function find_one(string $model, $id, callable $connection = null) {
  */
 function reader(callable $connection = null): callable {
     return $connection ?? global_read();
+}
+
+/**
+ * Attempts to update the given model in the database.
+ *
+ * @subpackage WabiORM.ORM
+ * @param object $model
+ * @param callable $connection (optional)
+ * @return boolean
+ */
+function update(object $model, callable $connection = null): bool {
+    $connection = writer($connection);
+
+    $query = q(
+        'update {*table} set {...fields} where {*key} = {id}',
+        model_data_for_update($model)
+    );
+
+    return was_execution_successful($connection(...$query));
 }
 
 /**

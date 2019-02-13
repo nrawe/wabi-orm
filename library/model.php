@@ -82,6 +82,32 @@ function model_data_for_insert(object $model): array {
 }
 
 /**
+ * Returns a q() compatible data structure for a updating a model in the
+ * database.
+ *
+ * @internal
+ * @subpackage WabiORM.Model
+ * @param object $model
+ * @return array
+ */
+function model_data_for_update(object $model): array {
+    $info = model_info($model);
+    $data = model_data($model);
+
+    $primaryKey = $info['primaryKey'];
+    $id = $data[$primaryKey];
+
+    unset($data[$primaryKey]);
+
+    return [
+        'fields' => $data,
+        'id' => $id,
+        'key' => $primaryKey,
+        'table' => $info['tableName'],
+    ];
+}
+
+/**
  * Returns the table name based on the given model.
  * 
  * This is a rather naive implementation based on the general convention of
