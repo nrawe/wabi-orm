@@ -37,7 +37,7 @@ function q(string $template, array $data): array {
  * @param mixed $value
  * @return bool
  */
-function are_values_scalar($value): bool {  
+function are_values_sane($value): bool {  
     if (\is_array($value)) {
         $filtered = filter(map($value, 'WabiORM\is_value_sane'));
 
@@ -64,7 +64,7 @@ function array_accessor(array $data): callable {
         );
 
         invariant(
-            are_values_scalar($data[$id]),
+            are_values_sane($data[$id]),
             'value for "' . $id . '" must be a scalar ("' . gettype($data[$id]) . '" given)'
         );
 
