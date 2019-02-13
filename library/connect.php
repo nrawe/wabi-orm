@@ -15,6 +15,65 @@ use PDOStatement;
 use RuntimeException;
 
 /**
+ * A resource which stores the result of a query.
+ */
+interface ConnectResultInterface {
+    /**
+     * The connection which the query was executed against.
+     */
+    public function connection(): \PDO;
+
+    /**
+     * The result of the query.
+     */
+    public function statement(): \PDOStatement;
+}
+
+/**
+ * {@inheritDoc}
+ */
+final class ConnectResult implements ConnectResultInterface {
+    /**
+     * The connection instance.
+     *
+     * @var \PDO
+     */
+    protected $conn;
+
+    /**
+     * The query statement.
+     *
+     * @var \PDOStatement
+     */
+    protected $stmt;
+
+    /**
+     * Creates a new ConnectResult.
+     *
+     * @param PDO $conn
+     * @param PDOStatement $stmt
+     */
+    public function __construct(\PDO $conn, \PDOStatement $stmt) {
+        $this->conn = $conn;
+        $this->stmt = $stmt;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function connection(): \PDO {
+        return $this->conn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function statement(): \PDOStatement {
+        return $this->stmt;
+    }
+}
+
+/**
  * Decorates a PDO connection to facilitate middleware during query execution.
  * 
  * @subpackage WabiORM.Connect
@@ -30,7 +89,7 @@ function connect(PDO $connection, array $middlewares = []): callable {
     $fn = compose_middleware(...$middlewares);
 
     // Return the executor interface.
-    return function (string $query, array $params = []) use ($connection, $fn) {
+    return function (string $query, array $params = []) use ($connection, $fn): ConnectResultInterface {
         return $fn($connection, $query, $params);
     };
 }
@@ -73,10 +132,10 @@ function compose_middleware(callable ...$middlewares): callable {
  * @return callable
  */
 function execute_query(): callable {
-    return function(PDO $conn, string $query, array $params): PDOStatement {
+    return function(PDO $conn, string $query, array $params): ConnectResult {
         $statement = $conn->prepare($query);
         $statement->execute($params);
 
-        return $statement;
+        return new ConnectResult($conn, $statement);
     };
 }

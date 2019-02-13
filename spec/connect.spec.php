@@ -15,7 +15,7 @@ describe('connection', function () {
 
             $execute = connect($this->db);
 
-            expect($execute('query'))->toBeAnInstanceOf('PDOStatement');
+            expect($execute('query'))->toBeAnInstanceOf('WabiORM\ConnectResultInterface');
         });
 
         it('executes custom middleware during query execution', function () {
@@ -29,7 +29,7 @@ describe('connection', function () {
 
             $execute = connect($this->db, [$middleware]);
 
-            expect($execute('query'))->toBeAnInstanceOf('PDOStatement');
+            expect($execute('query'))->toBeAnInstanceOf('WabiORM\ConnectResultInterface');
         });
     });
 });

@@ -27,6 +27,10 @@ $execute = connect(mysql('localhost', 'root', 'username', 'password'));
 // Use the returned function to execute queries with bound parameters.
 $result = $execute($query, $params);
 
+// The result will be an instance of WabiORM\ConnectResultInterface, which
+// allows access to both the connection and statement.
+echo $result->statement()->errorCode();
+
 // You can set this executor function globally, for convenience.
 use function WabiORM\{global_read, global_write};
 
@@ -53,7 +57,8 @@ $echo = function (PDO $conn, string $query, array $params, callable $next) {
 $executor = connect($conn, [$echo]);
 ```
 
-The only rule is that a `PDOStatement` is ultimately expected to be returned.
+The only rule is that a `WabiORM\ConnectResultInterface` is ultimately expected
+to be returned.
 
 ## Testing
 

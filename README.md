@@ -44,6 +44,8 @@ class Post {
     public $content;
 }
 
+
+
 $post = find_one(Post::class, 1);
 
 ```

@@ -37,3 +37,7 @@ Because any plain class can work with the framework, any methods and properties
 will still work. Because this wraps PDO, any public properties will be
 hydrated for you automatically, although you don't need to define them before
 use.
+
+## Persistence
+
+

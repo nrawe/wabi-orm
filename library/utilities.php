@@ -78,11 +78,11 @@ function first(array $set) {
  * @internal
  * @subpackage WabiORM.Utilities
  * @param string $model
- * @param \PDOStatement $stmt
+ * @param ConnectResultInterface $result
  * @return array
  */
-function hydrate(string $model, \PDOStatement $stmt): array {
-    return $stmt->fetchAll(\PDO::FETCH_CLASS, $model);
+function hydrate(string $model, ConnectResultInterface $result): array {
+    return $result->statement()->fetchAll(\PDO::FETCH_CLASS, $model);
 }
 
 /**
@@ -100,6 +100,18 @@ function invariant(bool $condition, string $message): void {
     if (! $condition) {
         throw new \RuntimeException('Invariant Violation: ' . $message);
     }
+}
+
+/**
+ * Attempts to return the ID of the last inserted record from the result.
+ *
+ * @internal
+ * @subpackage WabiORM.Utilities
+ * @param ConnectResultInterface $result
+ * @return void
+ */
+function last_insert_id(ConnectResultInterface $result): string {
+    return $result->connection()->lastInsertId();
 }
 
 /**
@@ -177,9 +189,9 @@ function snake($value, $delimiter = '_') {
  *
  * @internal
  * @subpackage WabiORM.Utilities
- * @param \PDOStatement $stmt
+ * @param ConnectResultInterface $result
  * @return boolean
  */
-function was_execution_successful(\PDOStatement $stmt): bool {
-    return $stmt->errorCode() === '00000';
+function was_execution_successful(ConnectResultInterface $result): bool {
+    return $result->statement()->errorCode() === '00000';
 }
