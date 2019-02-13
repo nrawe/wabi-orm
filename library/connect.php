@@ -88,6 +88,9 @@ function connect(PDO $connection, array $middlewares = []): callable {
     // Compose the middlewares into an executable chain.
     $fn = compose_middleware(...$middlewares);
 
+    // Ensure that our error mode is set correctly
+    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
     // Return the executor interface.
     return function (string $query, array $params = []) use ($connection, $fn): ConnectResultInterface {
         return $fn($connection, $query, $params);
