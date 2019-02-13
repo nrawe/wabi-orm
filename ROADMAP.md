@@ -29,9 +29,10 @@ ORM
 - Add `belongs_to_many()`
 - Add `has_one()`
 - Add `has_many()`
-- Add `insert()`
-- Add `update()`
-- Add `save()`
+- ~Add `create()`~
+- ~Add `update()`~
+- ~Add `save()`~
+- ~Add `delete()`~
 - Update documentation
 
 Tests
