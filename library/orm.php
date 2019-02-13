@@ -32,6 +32,14 @@ function create(object $model, callable $connection = null) {
     return last_insert_id($result);
 }
 
+/**
+ * Attempts to remove the model from the database.
+ *
+ * @subpackage WabiORM.ORM
+ * @param object $model
+ * @param callable $connection (optional)
+ * @return boolean
+ */
 function delete(object $model, callable $connection = null): bool {
     $connection = writer($connection);
 
