@@ -140,6 +140,10 @@ q('select * from table where {a%}', ['a' => 'b']);
 // query: select * from table where myCondition = ? 
 // params: [1]
 q('select * from table where myCondition = {a}', ['a' => 1]);
+
+// query: insert into table values(?, ?) 
+// params: [1, 2]
+q('insert into table values({a})', ['a' => [1, 2]);
 ```
 
 ## Raw values
@@ -153,4 +157,8 @@ helper for this to work inside the template itself:
 // query: select * from name
 // params: []
 q('select * from {*table}', ['table' => 'name']);
+
+// query: insert into table (a, b)
+// params: []
+q('insert into table ({*fields})', ['fields' => ['a', 'b']]);
 ```
