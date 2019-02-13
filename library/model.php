@@ -75,6 +75,27 @@ function model_data(object $model): array {
 }
 
 /**
+ * Returns a q() compatible data structure for a delete from the database.
+ *
+ * @internal
+ * @subpackage WabiORM.Model
+ * @param object $model
+ * @return array
+ */
+function model_data_for_delete(object $model): array {
+    $info = model_info($model);
+    $data = model_data($model);
+
+    $id = $data[$info['primaryKey']];
+
+    return [
+        'id' => $id,
+        'key' => $info['primaryKey'],
+        'table' => $info['tableName'],
+    ];
+}
+
+/**
  * Returns a q() compatible data structure for a insert into the database.
  *
  * @internal

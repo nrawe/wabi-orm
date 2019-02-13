@@ -32,6 +32,17 @@ function create(object $model, callable $connection = null) {
     return last_insert_id($result);
 }
 
+function delete(object $model, callable $connection = null): bool {
+    $connection = writer($connection);
+
+    $query = q(
+        'delete from {*table} where {*key} = {id}',
+        model_data_for_delete($model)
+    );
+
+    return was_execution_successful($connection(...$query));
+}
+
 /**
  * Attempts to return a model of the given type from the database.
  *
