@@ -43,30 +43,24 @@ describe('model_info()', function () {
     it('returns the default primary key from an object', function () {
         $info = model_info(new ModelWithoutOverrides);
 
-        expect($info)->toEqual([
-            'primaryKey' => 'id',
-            'tableName' => 'model_without_overridess',
-            'relationKey' => 'model_without_overrides_id'
-        ]);
+        expect($info->primaryKey())->toEqual('id');
+        expect($info->relationKey())->toEqual('model_without_overrides_id');
+        expect($info->tableName())->toEqual('model_without_overridess');
     });
 
     it('returns the primary key stated on the object', function () {
         $info = model_info(new ModelWithOverrides);
 
-        expect($info)->toEqual([
-            'primaryKey' => 'overridden',
-            'tableName' => 'custom_table',
-            'relationKey' => 'custom_id',
-        ]);
+        expect($info->primaryKey())->toEqual('overridden');
+        expect($info->relationKey())->toEqual('custom_id');
+        expect($info->tableName())->toEqual('custom_table');
     });
 
     it('returns the primary key from a class reference', function () {
         $info = model_info(ModelWithOverrides::class);
 
-        expect($info)->toEqual([
-            'primaryKey' => 'overridden',
-            'tableName' => 'custom_table',
-            'relationKey' => 'custom_id',
-        ]);
+        expect($info->primaryKey())->toEqual('overridden');
+        expect($info->relationKey())->toEqual('custom_id');
+        expect($info->tableName())->toEqual('custom_table');
     });
 });
