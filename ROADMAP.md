@@ -5,7 +5,6 @@ Documentation
 
 Connect
 - ~Ensure that PDO will throw exceptions on error~
-- Add a basic query logger middleware as an example
 - ~Add a mysql connection factory~
 
 Q
