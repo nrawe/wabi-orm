@@ -57,3 +57,32 @@ delete($newPost);
 
 > Note: you can use `save()` to either create or update, based on whether the
 > primary key of the model is null.
+
+
+## Selecting records
+
+As noted in the documentation on [queries](./queries.md), WabiORM does not
+ship with a query builder. However, it does provide a mechanism for writing
+queries with the intention that users can write specific handlers.
+
+```php
+
+use function WabiORM\read;
+
+class Letter {
+    public $id;
+
+    public $is_pending;
+}
+
+function find_pending_letters(): array {
+    // The query will be parsed by q().
+    // The 'table' parameter will be automatically available to us.
+    return read(
+        Letter::class, 'select * from {*table} where is_pending = true'
+    );
+}
+```
+
+The goal of this is to allow for very specific functions which return specific
+data. It fits with some of the ideas with functional programming.

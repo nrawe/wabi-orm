@@ -176,6 +176,27 @@ function has_one(string $related, object $model, callable $connection = null) {
 }
 
 /**
+ * Provides a mechanism for generically executing a query and hydrating the
+ * result.
+ * 
+ * @subpackage WabiORM.ORM
+ * @param string $model
+ * @param string $query The query template string for use with q()
+ * @param array $params The query parameters for use with q()
+ * @param callable $connection
+ * @return object[]
+ */
+function read(string $model, string $query, array $params = [], callable $connection = null): array {
+    $connection = reader($connection);
+
+    $info = model_info($model);
+
+    $params['table'] = $info['tableName'];
+
+    return hydrate($model, $connection(...q($query, $params)));
+}
+
+/**
  * Yeilds a connection that can be used for reading.
  *
  * @internal 
