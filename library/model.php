@@ -160,6 +160,18 @@ function model_default_table_name($model): string {
 }
 
 /**
+ * Returns the relation key of the model based on its class name.
+ *
+ * @internal
+ * @subpackage WabiORM.Model
+ * @param string|object $model
+ * @return string
+ */
+function model_default_relation_key($model): string {
+    return snake(class_basename($model)) . '_id';
+}
+
+/**
  * Helper function which returns an array of meta data ("info") from a model.
  *
  * @internal
@@ -182,6 +194,7 @@ function model_info($model): array {
     return [
         'primaryKey' => $override('withPrimaryKey', 'id'),
         'tableName' => $override('withTableName', model_default_table_name($model)),
+        'relationKey' => $override('withRelationKey', model_default_relation_key($model)),
     ];
 }
 

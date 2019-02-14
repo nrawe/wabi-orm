@@ -46,6 +46,7 @@ describe('model_info()', function () {
         expect($info)->toEqual([
             'primaryKey' => 'id',
             'tableName' => 'model_without_overridess',
+            'relationKey' => 'model_without_overrides_id'
         ]);
     });
 
@@ -55,6 +56,7 @@ describe('model_info()', function () {
         expect($info)->toEqual([
             'primaryKey' => 'overridden',
             'tableName' => 'custom_table',
+            'relationKey' => 'custom_id',
         ]);
     });
 
@@ -64,6 +66,7 @@ describe('model_info()', function () {
         expect($info)->toEqual([
             'primaryKey' => 'overridden',
             'tableName' => 'custom_table',
+            'relationKey' => 'custom_id',
         ]);
     });
 });

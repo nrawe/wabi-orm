@@ -31,9 +31,11 @@ will bring that to you, too. Or not ¯\_(ツ)_/¯
 <?php
 
 use function WabiORM\{
+    belongs_to,
     connect, 
     delete, 
     find_one, 
+    has_many, 
     global_read, 
     global_write, 
     mysql, 
@@ -45,12 +47,26 @@ $connect = connect(mysql($host, $db, $user, $pwd));
 global_read($connect);
 global_write($connect);
 
+class User {
+    public $id;
+
+    public function posts() {
+        return has_many(Post::class, $this);
+    }
+}
+
 class Post {
     public $id;
+
+    public $user_id;
 
     public $title;
 
     public $content;
+
+    public function user() {
+        return belongs_to(User::class, $this);
+    }
 }
 
 $newPost = new Post();
@@ -64,6 +80,12 @@ $post->title = 'My first post (edited!)';
 
 save($post);
 delete($post);
+
+$user = find_one(User::class, 1);
+
+foreach ($user->posts() as $post) {
+    echo $post->title, PHP_EOL;
+}
 
 ```
 

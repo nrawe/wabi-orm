@@ -7,6 +7,29 @@ declare(strict_types=1);
 namespace WabiORM;
 
 /**
+ * Returns a model instance for the owner of the given model.
+ *
+ * @subpackage WabiORM.ORM
+ * @param string $related
+ * @param object $model
+ * @param callable $connection
+ * @return object|null
+ */
+function belongs_to(string $related, object $model, callable $connection = null) {
+    $connection = reader($connection);
+
+    $info = model_info($related);
+
+    $query = q('select * from {*table} where {*key} = {id}', [
+        'id' => $model->{$info['relationKey']},
+        'key' => $info['primaryKey'],
+        'table' => $info['tableName'],
+    ]);
+
+    return first(hydrate($related, $connection(...$query)));
+}
+
+/**
  * Attempts to create the model in the database.
  *
  * @subpackage WabiORM.ORM
@@ -72,6 +95,43 @@ function find_one(string $model, $id, callable $connection = null) {
     ]);
 
     return first(hydrate($model, $connection(...$query)));
+}
+
+/**
+ * Returns a model instance for the owner of the given model.
+ *
+ * @subpackage WabiORM.ORM
+ * @param string $related
+ * @param object $model
+ * @param callable $connection
+ * @return object[]
+ */
+function has_many(string $related, object $model, callable $connection = null) {
+    $connection = reader($connection);
+
+    $modelInfo = model_info($model);
+    $relatedInfo = model_info($related);
+
+    $query = q('select * from {*table} where {*key} = {id}', [
+        'id' => $model->{$modelInfo['primaryKey']},
+        'key' => $modelInfo['relationKey'],
+        'table' => $relatedInfo['tableName'],
+    ]);
+
+    return hydrate($related, $connection(...$query));
+}
+
+/**
+ * Returns a model instance for the owner of the given model.
+ *
+ * @subpackage WabiORM.ORM
+ * @param string $related
+ * @param object $model
+ * @param callable $connection
+ * @return object|null
+ */
+function has_one(string $related, object $model, callable $connection = null) {
+    return first(has_many($related, $model, $connection));
 }
 
 /**

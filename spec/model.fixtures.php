@@ -24,4 +24,8 @@ class ModelWithOverrides {
     public function withTableName(): string {
         return 'custom_table';
     }
+
+    public function withRelationKey(): string {
+        return 'custom_id';
+    }
 }
