@@ -98,6 +98,47 @@ function find_one(string $model, $id, callable $connection = null) {
 }
 
 /**
+ * Returns the first record from the table for the model.
+ *
+ * @subpackage WabiORM.ORM
+ * @param string $model
+ * @param callable $connection
+ * @return object|null
+ */
+function find_first(string $model, callable $connection = null) {
+    $connection = reader($connection);
+
+    $info = model_info($model);
+
+    $query = q('select * from {*table} limit 0, 1', [
+        'table' => $info['tableName'],
+    ]);
+
+    return first(hydrate($model, $connection(...$query)));
+}
+
+/**
+ * Returns the last record from the table for the model.
+ *
+ * @subpackage WabiORM.ORM
+ * @param string $model
+ * @param callable $connection
+ * @return object|null
+ */
+function find_last(string $model, callable $connection = null) {
+    $connection = reader($connection);
+
+    $info = model_info($model);
+
+    $query = q('select * from {*table} limit 0, 1 order by {*key} desc', [
+        'key' => $info['primaryKey'],
+        'table' => $info['tableName'],
+    ]);
+
+    return first(hydrate($model, $connection(...$query)));
+}
+
+/**
  * Returns a model instance for the owner of the given model.
  *
  * @subpackage WabiORM.ORM
