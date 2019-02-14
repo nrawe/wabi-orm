@@ -117,7 +117,8 @@ This section documents the advanced usage.
 
 1. [Using connections](docs/connect.md)
 2. [Working with models](docs/models.md)
-3. [Writing queries with `q()`](docs/queries.md)
+3. [Working with model relationships](docs/relationships.md)
+4. [Writing queries with `q()`](docs/queries.md)
 
 ## Roadmap
 See [ROADMAP.md](./ROADMAP.md) for details of the planned work.
