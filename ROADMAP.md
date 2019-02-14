@@ -4,7 +4,7 @@ Documentation
 - ~Break out documentation for the advanced topics~
 
 Connect
-- Ensure that PDO will throw exceptions on error
+- ~Ensure that PDO will throw exceptions on error~
 - Add a basic query logger middleware as an example
 - ~Add a mysql connection factory~
 
@@ -33,7 +33,7 @@ ORM
 - ~Add `update()`~
 - ~Add `save()`~
 - ~Add `delete()`~
-- Update documentation
+- ~Update documentation~
 
 Tests
 - SQLite integration test suite?
