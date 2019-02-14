@@ -40,21 +40,21 @@ final class ModelInfo implements ModelInfoInterface {
     /**
      * The primary key of the model.
      *
-     * @return string
+     * @var string
      */
     protected $primaryKey;
 
     /**
      * The key to use when looking for the model in other tables.
      *
-     * @return string
+     * @var string
      */
     protected $relationKey;
 
     /**
      * The table name for the model.
      *
-     * @return string
+     * @var string
      */
     protected $tableName;
 
