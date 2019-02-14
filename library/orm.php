@@ -10,8 +10,8 @@ namespace WabiORM;
  * Returns a model instance for the owner of the given model.
  *
  * @subpackage WabiORM.ORM
- * @param string $related
- * @param object $model
+ * @param string $related The reference to the related class 
+ * @param object $model The instance to load the relation for
  * @param callable $connection
  * @return object|null
  */
@@ -33,7 +33,7 @@ function belongs_to(string $related, object $model, callable $connection = null)
  * Attempts to create the model in the database.
  *
  * @subpackage WabiORM.ORM
- * @param object $model
+ * @param object $model The model instance to load
  * @param callable $connection (optional)
  * @return boolean
  */
@@ -59,7 +59,7 @@ function create(object $model, callable $connection = null) {
  * Attempts to remove the model from the database.
  *
  * @subpackage WabiORM.ORM
- * @param object $model
+ * @param object $model The model instance to delete
  * @param callable $connection (optional)
  * @return boolean
  */
@@ -78,8 +78,8 @@ function delete(object $model, callable $connection = null): bool {
  * Attempts to return a model of the given type from the database.
  *
  * @subpackage WabiORM.ORM
- * @param string $model
- * @param scalar $id
+ * @param string $model The class reference of the model to load
+ * @param scalar $id The ID of the model
  * @param callable $connection (optional)
  * @return object|null
  */
@@ -101,7 +101,7 @@ function find_one(string $model, $id, callable $connection = null) {
  * Returns the first record from the table for the model.
  *
  * @subpackage WabiORM.ORM
- * @param string $model
+ * @param string $model The class reference of the model to load
  * @param callable $connection
  * @return object|null
  */
@@ -121,7 +121,7 @@ function find_first(string $model, callable $connection = null) {
  * Returns the last record from the table for the model.
  *
  * @subpackage WabiORM.ORM
- * @param string $model
+ * @param string $model The class reference of the model to load
  * @param callable $connection
  * @return object|null
  */
@@ -142,8 +142,8 @@ function find_last(string $model, callable $connection = null) {
  * Returns a model instance for the owner of the given model.
  *
  * @subpackage WabiORM.ORM
- * @param string $related
- * @param object $model
+ * @param string $related The reference to the related class
+ * @param object $model The instance to load the relation for
  * @param callable $connection
  * @return object[]
  */
@@ -166,8 +166,8 @@ function has_many(string $related, object $model, callable $connection = null) {
  * Returns a model instance for the owner of the given model.
  *
  * @subpackage WabiORM.ORM
- * @param string $related
- * @param object $model
+ * @param string $related The reference to the related class
+ * @param object $model The instance to load the relation for
  * @param callable $connection
  * @return object|null
  */
@@ -180,7 +180,7 @@ function has_one(string $related, object $model, callable $connection = null) {
  * result.
  * 
  * @subpackage WabiORM.ORM
- * @param string $model
+ * @param string $model The class reference of the model to load
  * @param string $query The query template string for use with q()
  * @param array $params The query parameters for use with q()
  * @param callable $connection
@@ -226,7 +226,7 @@ function save(object $model, callable $connection = null) {
  * Attempts to update the given model in the database.
  *
  * @subpackage WabiORM.ORM
- * @param object $model
+ * @param object $model The instance of the model to update
  * @param callable $connection (optional)
  * @return boolean
  */
