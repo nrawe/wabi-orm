@@ -15,7 +15,7 @@ namespace WabiORM;
  * @internal
  * @subpackage WabiORM.Utilities
  * @see illuminate/support::helpers::class_basename()
- * @param  string|object  $class
+ * @param string|object $class
  * @return string
  */
 function class_basename($class) {

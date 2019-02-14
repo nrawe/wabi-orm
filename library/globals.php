@@ -17,7 +17,7 @@ use RuntimeException;
  * available.
  *
  * @subpackage WabiORM.Globals
- * @param callable|null $connection
+ * @param callable|null $connection The connection created by connect
  * @return callable|void
  */
 function global_read() {
@@ -45,7 +45,7 @@ function global_read() {
  * available.
  *
  * @subpackage WabiORM.Globals
- * @param callable|null $connection
+ * @param callable|null $connection The connection created by connect
  * @return callable|void
  */
 function global_write() {

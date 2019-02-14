@@ -16,8 +16,8 @@ namespace WabiORM;
  * 
  * @see docs/queries
  * @subpackage WabiORM.Q
- * @param string $template
- * @param array $data
+ * @param string $template The query template string
+ * @param array $data The data to be bound in the query
  * @return array
  */
 function q(string $template, array $data): array {
@@ -34,7 +34,7 @@ function q(string $template, array $data): array {
  *
  * @internal
  * @subpackage WabiORM.Q
- * @param mixed $value
+ * @param array|scalar $value The value to test
  * @return bool
  */
 function are_values_sane($value): bool {  
@@ -53,7 +53,7 @@ function are_values_sane($value): bool {
  *
  * @internal
  * @subpackage WabiORM.Q
- * @param array $data
+ * @param array $data The data to wrap
  * @return callable
  */
 function array_accessor(array $data): callable {
@@ -77,7 +77,7 @@ function array_accessor(array $data): callable {
  *
  * @internal
  * @subpackage WabiORM.Q
- * @param string $expression
+ * @param string $expression The binding expression to clean
  * @return string
  */
 function id_from_expr(string $expression): string {
@@ -90,8 +90,8 @@ function id_from_expr(string $expression): string {
  *
  * @internal
  * @subpackage WabiORM.Q
- * @param array $processors
- * @param callable $getValue
+ * @param array $processors The processors which can be invoked
+ * @param callable $getValue An interface which can be used to get a value
  * @return callable
  */
 function invoke_processor(array $processors, callable $getValue): callable {
@@ -111,7 +111,7 @@ function invoke_processor(array $processors, callable $getValue): callable {
 /**
  * Returns whether the value can be used inside of a binding.
  *
- * @param scalar|null $value
+ * @param scalar|null $value The value to test
  * @return boolean
  */
 function is_value_sane($value): bool {
@@ -126,7 +126,7 @@ function is_value_sane($value): bool {
  *
  * @internal
  * @subpackage WabiORM.Q
- * @param string $template
+ * @param string $template The query string template to return the binding for
  * @return array
  */
 function next_binding_position(string $template): array {
@@ -155,8 +155,8 @@ function next_binding_position(string $template): array {
  * 
  * @internal
  * @subpackage WabiORM.Q
- * @param string $template
- * @param callable $handler
+ * @param string $template The query string template
+ * @param callable $handler The callback to be invoked when a binding is found
  * @return array
  */
 function parse_bindings(string $template, callable $handler): array {
@@ -241,7 +241,7 @@ function direct_processor(): callable {
  *
  * @internal
  * @subpackage WabiORM.Q
- * @param boolean $negate
+ * @param boolean $negate Whether to test for inequality instead
  * @return callable
  */
 function equals_processor(bool $negate): callable {
@@ -263,7 +263,7 @@ function equals_processor(bool $negate): callable {
  *
  * @internal
  * @subpackage WabiORM.Q
- * @param boolean $equalTo
+ * @param boolean $equalTo Whether to also test for equality
  * @return callable
  */
 function greater_processor(bool $equalTo): callable {
@@ -277,7 +277,7 @@ function greater_processor(bool $equalTo): callable {
  *
  * @internal
  * @subpackage WabiORM.Q
- * @param boolean $equalTo
+ * @param boolean $equalTo Whether to also test for equality
  * @return callable
  */
 function lesser_processor(bool $equalTo): callable {

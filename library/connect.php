@@ -77,8 +77,8 @@ final class ConnectResult implements ConnectResultInterface {
  * Decorates a PDO connection to facilitate middleware during query execution.
  * 
  * @subpackage WabiORM.Connect
- * @param PDO $connection
- * @param callable[] $middlewars
+ * @param PDO $connection The connection object to wrap
+ * @param callable[] $middlewares An array of middlewares
  * @return callable
  */
 function connect(PDO $connection, array $middlewares = []): callable {
@@ -102,7 +102,7 @@ function connect(PDO $connection, array $middlewares = []): callable {
  * 
  * @internal
  * @subpackage WabiORM.Connect
- * @param callable[] $middlewares
+ * @param callable[] $middlewares The middlewares which need to be chained
  * @return callable
  */
 function compose_middleware(callable ...$middlewares): callable {
