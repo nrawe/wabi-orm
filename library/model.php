@@ -7,6 +7,93 @@ declare(strict_types=1);
 namespace WabiORM;
 
 /**
+ * Resource which contains information about a model.
+ */
+interface ModelInfoInterface {
+    /**
+     * The primary key of the model.
+     *
+     * @return string
+     */
+    public function primaryKey(): string;
+
+    /**
+     * The key to use when looking for the model in other tables.
+     *
+     * @return string
+     */
+    public function relationKey(): string;
+
+    /**
+     * The table name for the model.
+     *
+     * @return string
+     */
+    public function tableName(): string;
+}
+
+/**
+ * {@inheritDoc}
+ */
+final class ModelInfo implements ModelInfoInterface {
+
+    /**
+     * The primary key of the model.
+     *
+     * @return string
+     */
+    protected $primaryKey;
+
+    /**
+     * The key to use when looking for the model in other tables.
+     *
+     * @return string
+     */
+    protected $relationKey;
+
+    /**
+     * The table name for the model.
+     *
+     * @return string
+     */
+    protected $tableName;
+
+    /**
+     * Creates a new ModelInfo object.
+     *
+     * @param string ...$params The fields which make up the ModelInfo.
+     */
+    public function __construct(array $params) {
+        foreach ($params as $key => $value) {
+            if (\property_exists($this, $key)) {
+                $this->$key = $value;
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function primaryKey(): string {
+        return $this->primaryKey;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function relationKey(): string {
+        return $this->relationKey;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function tableName(): string {
+        return $this->tableName;
+    }
+}
+
+/**
  * Uses reflection to create a new model instance.
  *
  * @internal
@@ -44,7 +131,7 @@ function create_model(string $model, bool $withConstructor = true): object {
 function is_persisted(object $model): bool {
     $info = model_info($model);
 
-    return !is_null($model->{$info['primaryKey']});
+    return !is_null($model->{$info->primaryKey()});
 }
 
 /**
@@ -86,12 +173,12 @@ function model_data_for_delete(object $model): array {
     $info = model_info($model);
     $data = model_data($model);
 
-    $id = $data[$info['primaryKey']];
+    $id = $data[$info->primaryKey()];
 
     return [
         'id' => $id,
-        'key' => $info['primaryKey'],
-        'table' => $info['tableName'],
+        'key' => $info->primaryKey(),
+        'table' => $info->tableName(),
     ];
 }
 
@@ -107,10 +194,10 @@ function model_data_for_insert(object $model): array {
     $info = model_info($model);
     $data = model_data($model);
 
-    unset($data[$info['primaryKey']]);
+    unset($data[$info->primaryKey()]);
 
     return [
-        'table' => $info['tableName'],
+        'table' => $info->tableName(),
         'fields' => \array_keys($data),
         'values' => \array_values($data),
     ];
@@ -129,7 +216,7 @@ function model_data_for_update(object $model): array {
     $info = model_info($model);
     $data = model_data($model);
 
-    $primaryKey = $info['primaryKey'];
+    $primaryKey = $info->primaryKey();
     $id = $data[$primaryKey];
 
     unset($data[$primaryKey]);
@@ -138,7 +225,7 @@ function model_data_for_update(object $model): array {
         'fields' => $data,
         'id' => $id,
         'key' => $primaryKey,
-        'table' => $info['tableName'],
+        'table' => $info->tableName(),
     ];
 }
 
@@ -177,9 +264,9 @@ function model_default_relation_key($model): string {
  * @internal
  * @subpackage WabiORM.Model
  * @param string|object $model
- * @return array
+ * @return ModelInfoInterface
  */
-function model_info($model): array {
+function model_info($model): ModelInfoInterface {
     invariant(
         is_string($model) || is_object($model),
         'model_info() can only return data from a class reference or instance'
@@ -191,11 +278,11 @@ function model_info($model): array {
 
     $override = model_override($model);
 
-    return [
+    return new ModelInfo([
         'primaryKey' => $override('withPrimaryKey', 'id'),
         'tableName' => $override('withTableName', model_default_table_name($model)),
         'relationKey' => $override('withRelationKey', model_default_relation_key($model)),
-    ];
+    ]);
 }
 
 /**

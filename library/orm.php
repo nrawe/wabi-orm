@@ -21,9 +21,9 @@ function belongs_to(string $related, object $model, callable $connection = null)
     $info = model_info($related);
 
     $query = q('select * from {*table} where {*key} = {id}', [
-        'id' => $model->{$info['relationKey']},
-        'key' => $info['primaryKey'],
-        'table' => $info['tableName'],
+        'id' => $model->{$info->relationKey()},
+        'key' => $info->primaryKey(),
+        'table' => $info->tableName(),
     ]);
 
     return first(hydrate($related, $connection(...$query)));
@@ -90,8 +90,8 @@ function find_one(string $model, $id, callable $connection = null) {
 
     $query = q('select * from {*table} where {*key} = {id}', [
         'id' => $id,
-        'key' => $info['primaryKey'],
-        'table' => $info['tableName'],
+        'key' => $info->primaryKey(),
+        'table' => $info->tableName(),
     ]);
 
     return first(hydrate($model, $connection(...$query)));
@@ -111,7 +111,7 @@ function find_first(string $model, callable $connection = null) {
     $info = model_info($model);
 
     $query = q('select * from {*table} limit 0, 1', [
-        'table' => $info['tableName'],
+        'table' => $info->tableName(),
     ]);
 
     return first(hydrate($model, $connection(...$query)));
@@ -131,8 +131,8 @@ function find_last(string $model, callable $connection = null) {
     $info = model_info($model);
 
     $query = q('select * from {*table} limit 0, 1 order by {*key} desc', [
-        'key' => $info['primaryKey'],
-        'table' => $info['tableName'],
+        'key' => $info->primaryKey(),
+        'table' => $info->tableName(),
     ]);
 
     return first(hydrate($model, $connection(...$query)));
@@ -154,9 +154,9 @@ function has_many(string $related, object $model, callable $connection = null) {
     $relatedInfo = model_info($related);
 
     $query = q('select * from {*table} where {*key} = {id}', [
-        'id' => $model->{$modelInfo['primaryKey']},
-        'key' => $modelInfo['relationKey'],
-        'table' => $relatedInfo['tableName'],
+        'id' => $model->{$modelInfo->primaryKey()},
+        'key' => $modelInfo->relationKey(),
+        'table' => $relatedInfo->tableName(),
     ]);
 
     return hydrate($related, $connection(...$query));
@@ -191,7 +191,7 @@ function read(string $model, string $query, array $params = [], callable $connec
 
     $info = model_info($model);
 
-    $params['table'] = $info['tableName'];
+    $params['table'] = $info->tableName();
 
     return hydrate($model, $connection(...q($query, $params)));
 }
