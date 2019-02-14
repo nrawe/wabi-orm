@@ -23,12 +23,12 @@ ModelInfo
 - ~Add documentation~
 
 ORM
+- ~Add `find_first()`~
+- ~Add `find_last()`~
 - ~Add `find_one()`~
-- Add `find_many()`
-- Add `belongs_to()`
-- Add `belongs_to_many()`
-- Add `has_one()`
-- Add `has_many()`
+- ~Add `belongs_to()`~
+- ~Add `has_one()`~
+- ~Add `has_many()`~
 - ~Add `create()`~
 - ~Add `update()`~
 - ~Add `save()`~
@@ -50,4 +50,3 @@ ORM
 - Add `has_many_through()`
 - Add `associate()`
 - Add `assign()`
-- Add `transaction()`
