@@ -18,7 +18,7 @@ namespace WabiORM;
 function belongs_to(string $related, object $model, callable $connection = null) {
     $connection = reader($connection);
 
-    $info = model_info($related);
+    $info = model_info_cached($related);
 
     $query = q('select * from {*table} where {*key} = {id}', [
         'id' => $model->{$info->relationKey()},
@@ -86,7 +86,7 @@ function delete(object $model, callable $connection = null): bool {
 function find_one(string $model, $id, callable $connection = null) {
     $connection = reader($connection);
 
-    $info = model_info($model);
+    $info = model_info_cached($model);
 
     $query = q('select * from {*table} where {*key} = {id}', [
         'id' => $id,
@@ -108,7 +108,7 @@ function find_one(string $model, $id, callable $connection = null) {
 function find_first(string $model, callable $connection = null) {
     $connection = reader($connection);
 
-    $info = model_info($model);
+    $info = model_info_cached($model);
 
     $query = q('select * from {*table} limit 0, 1', [
         'table' => $info->tableName(),
@@ -128,7 +128,7 @@ function find_first(string $model, callable $connection = null) {
 function find_last(string $model, callable $connection = null) {
     $connection = reader($connection);
 
-    $info = model_info($model);
+    $info = model_info_cached($model);
 
     $query = q('select * from {*table} limit 0, 1 order by {*key} desc', [
         'key' => $info->primaryKey(),
@@ -150,8 +150,8 @@ function find_last(string $model, callable $connection = null) {
 function has_many(string $related, object $model, callable $connection = null) {
     $connection = reader($connection);
 
-    $modelInfo = model_info($model);
-    $relatedInfo = model_info($related);
+    $modelInfo = model_info_cached($model);
+    $relatedInfo = model_info_cached($related);
 
     $query = q('select * from {*table} where {*key} = {id}', [
         'id' => $model->{$modelInfo->primaryKey()},
@@ -189,7 +189,7 @@ function has_one(string $related, object $model, callable $connection = null) {
 function read(string $model, string $query, array $params = [], callable $connection = null): array {
     $connection = reader($connection);
 
-    $info = model_info($model);
+    $info = model_info_cached($model);
 
     $params['table'] = $info->tableName();
 

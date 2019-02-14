@@ -129,7 +129,7 @@ function create_model(string $model, bool $withConstructor = true): object {
  * @return boolean
  */
 function is_persisted(object $model): bool {
-    $info = model_info($model);
+    $info = model_info_cached($model);
 
     return !is_null($model->{$info->primaryKey()});
 }
@@ -170,7 +170,7 @@ function model_data(object $model): array {
  * @return array
  */
 function model_data_for_delete(object $model): array {
-    $info = model_info($model);
+    $info = model_info_cached($model);
     $data = model_data($model);
 
     $id = $data[$info->primaryKey()];
@@ -191,7 +191,7 @@ function model_data_for_delete(object $model): array {
  * @return array
  */
 function model_data_for_insert(object $model): array {
-    $info = model_info($model);
+    $info = model_info_cached($model);
     $data = model_data($model);
 
     unset($data[$info->primaryKey()]);
@@ -213,7 +213,7 @@ function model_data_for_insert(object $model): array {
  * @return array
  */
 function model_data_for_update(object $model): array {
-    $info = model_info($model);
+    $info = model_info_cached($model);
     $data = model_data($model);
 
     $primaryKey = $info->primaryKey();
@@ -256,6 +256,26 @@ function model_default_table_name($model): string {
  */
 function model_default_relation_key($model): string {
     return snake(class_basename($model)) . '_id';
+}
+
+/**
+ * Caching wrapper for model_info to reduce runtime expense.
+ *
+ * @internal
+ * @subpackage WabiORM.Model
+ * @param string|object $model
+ * @return ModelInfoInterface
+ */
+function model_info_cached($model): ModelInfoInterface {
+    static $cache = [];
+
+    $key = is_string($model) ? $model : get_class($model);
+
+    if (\array_key_exists($key, $cache)) {
+        return $cache[$key];
+    }
+
+    return $cache[$key] = model_info($model);
 }
 
 /**
