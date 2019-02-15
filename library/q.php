@@ -251,7 +251,7 @@ function processors(): array {
 function direct_processor(): callable {
     return function ($identifier, $value) {
         if (\is_array($value)) {
-            $repeated = repeat('?, ', count($value));
+            $repeated = str_repeat('?, ', count($value));
             $trimmed = trim($repeated, ', ');
 
             return [$trimmed, $value];
@@ -436,7 +436,7 @@ function equals_condition(string $field, $value, bool $negate): array {
  * @return string
  */
 function in_condition(string $field, array $value, bool $negate): array {
-    $markers = \trim(repeat('?, ', count($value)), ', ');
+    $markers = \trim(str_repeat('?, ', count($value)), ', ');
 
     $expr = $field . ($negate ? ' not in (' : ' in (') . $markers . ')'; 
 

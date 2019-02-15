@@ -143,25 +143,6 @@ function map(array $target, callable $fn): array {
 }
 
 /**
- * Repeats a string a given number of times.
- *
- * @internal
- * @subpackage WabiORM.Utilities
- * @param string $pattern
- * @param integer $times
- * @return string
- */
-function repeat(string $pattern, int $times): string {
-    $carry = '';
-
-    for ($i = 0; $i < $times; $i++) {
-        $carry .= $pattern;
-    }
-
-    return $carry;
-}
-
-/**
  * Convert a string to snake case.
  *
  * This is taken from the Illuminate source code.
