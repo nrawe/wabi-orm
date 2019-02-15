@@ -22,7 +22,7 @@ namespace WabiORM;
  */
 function q(string $template, array $data): array {
     $processors = processors();
-    $getValue = array_accessor($data);
+    $getValue = array_accessor_cached($data);
 
     return parse_bindings(
         $template, invoke_processor($processors, $getValue)
@@ -69,6 +69,31 @@ function array_accessor(array $data): callable {
         );
 
         return $data[$id];
+    };
+}
+
+/**
+ * Partial application which wraps access to the passed data array in safety
+ * checks.
+ * 
+ * This wraps over the top of array_accessor to reduce validation checks for
+ * values that may be accessed multiple times.
+ *
+ * @internal
+ * @subpackage WabiORM.Q
+ * @param array $data The data to wrap
+ * @return callable
+ */
+function array_accessor_cached(array $data): callable {
+    $accessor = array_accessor($data);
+    $checked = [];
+
+    return function (string $id) use ($accessor, &$checked) {
+        if (\array_key_exists($id, $checked)) {
+            return $checked[$id];
+        }
+
+        return $checked[$id] = $accessor($id);
     };
 }
 
