@@ -7,6 +7,135 @@ declare(strict_types=1);
 namespace WabiORM;
 
 /**
+ * Represents a relationship between models.
+ */
+interface RelationInterface {
+    /**
+     * The name of the class to be hydrated when the relationship is loaded.
+     *
+     * @return string
+     */
+    public function className(): string;
+
+    /**
+     * Returns whether a single model should be returned.
+     *
+     * @return boolean
+     */
+    public function isOne(): bool;
+
+    /**
+     * Returns whether an array of model should be returned.
+     *
+     * @return boolean
+     */
+    public function isMany(): bool;
+
+    /**
+     * Returns the name of the key in the table which can be tested for the
+     * related model(s).
+     *
+     * @return boolean
+     */
+    public function keyName(): string;
+
+    /**
+     * Returns the name of the table which should be looked at for the 
+     * related model(s).
+     *
+     * @return boolean
+     */
+    public function tableName(): string;
+}
+
+/**
+ * {@inheritDoc}
+ */
+final class Relationship implements RelationInterface {
+
+    /**
+     * The class name.
+     *
+     * @var string
+     */
+    protected $class;
+
+    /**
+     * The key name.
+     *
+     * @var string
+     */
+    protected $key;
+
+    /**
+     * Whether the result set should be an array.
+     *
+     * @var bool
+     */
+    protected $many;
+
+    /**
+     * The table name.
+     *
+     * @var string
+     */
+    protected $table;
+
+    /**
+     * Creates a new instance of the Relationship.
+     *
+     * @param string $class
+     * @param string $key
+     * @param string $table
+     */
+    public function __construct(string $class, string $key, string $table, bool $many) {
+        $this->class = $class;
+        $this->key = $key;
+        $this->many = $many;
+        $this->table = $table;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function className(): string {
+        return $this->class;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return boolean
+     */
+    public function isOne(): bool {
+        return $this->many === false;
+    }
+    
+    /**
+     * Undocumented function
+     *
+     * @return boolean
+     */
+    public function isMany(): bool {
+        return $this->many === true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function keyName(): string {
+        return $this->key;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function tableName(): string {
+        return $this->table;
+    }
+}
+
+/**
  * Returns a model instance for the owner of the given model.
  *
  * @subpackage WabiORM.ORM
@@ -136,6 +265,39 @@ function find_last(string $model, callable $connection = null) {
     ]);
 
     return first(hydrate($model, $connection(...$query)));
+}
+
+/**
+ * Returns the records with the given relationship to those models passed.
+ *
+ * The records will be hydrated to the model of the relationship.
+ * 
+ * @subpackage WabiORM.ORM
+ * @param RelationInterface $relation
+ * @param array $models
+ * @param callable $connection
+ * @return object[]
+ */
+function find_related(RelationInterface $relation, array $models, callable $connection = null) {
+    $connection = reader($connection);
+
+    $key = $relation->keyName();
+    $ids = map($models, function ($model) use ($key) {
+        return $model->$key;
+    });
+
+    $query = q("select * from {*table} where {=$key}", [
+        $key => $ids,
+        'table' => $relation->tableName(),
+    ]);
+
+    $data = hydrate($relation->className(), $connection(...$query));
+
+    if ($relation->isOne()) {
+        $data = first($data);
+    }
+
+    return $data;
 }
 
 /**
