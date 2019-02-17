@@ -34,18 +34,19 @@ ORM
 - ~Add `delete()`~
 - ~Update documentation~
 
-Tests
-- SQLite integration test suite?
-- Continuous Integration
-
-Version 1.1
+Version 2.0
 -----------
 Query
 - Add the ability to strip comments from queries
 - Add the ability to perform conditional sections
 
 ORM
+- Rebuild the relationship system
 - Add `has_one_through()`
 - Add `has_many_through()`
 - Add `associate()`
 - Add `assign()`
+
+Tests
+- SQLite integration test suite?
+- Continuous Integration
