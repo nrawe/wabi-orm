@@ -32,18 +32,26 @@ interface RelationInterface {
     public function isMany(): bool;
 
     /**
-     * Returns the name of the key in the table which can be tested for the
-     * related model(s).
+     * Returns the name of the key in the related models' table which can be
+     * tested for the related model(s).
      *
-     * @return boolean
+     * @return string
      */
-    public function keyName(): string;
+    public function foreignKeyName(): string;
+
+    /**
+     * Returns the name of the key in the local models' table which can be
+     * tested for the related model(s).
+     *
+     * @return string
+     */
+    public function localKeyName(): string;
 
     /**
      * Returns the name of the table which should be looked at for the 
      * related model(s).
      *
-     * @return boolean
+     * @return string
      */
     public function tableName(): string;
 }
@@ -61,11 +69,18 @@ final class Relationship implements RelationInterface {
     protected $class;
 
     /**
-     * The key name.
+     * The foreign key name.
      *
      * @var string
      */
-    protected $key;
+    protected $foreignKey;
+
+    /**
+     * The local key name.
+     *
+     * @var string
+     */
+    protected $localKey;
 
     /**
      * Whether the result set should be an array.
@@ -85,12 +100,15 @@ final class Relationship implements RelationInterface {
      * Creates a new instance of the Relationship.
      *
      * @param string $class
-     * @param string $key
+     * @param string $localKey
+     * @param string $foreignKey
      * @param string $table
+     * @param bool $many
      */
-    public function __construct(string $class, string $key, string $table, bool $many) {
+    public function __construct(string $class, string $localKey, string $foreignKey, string $table, bool $many = true) {
         $this->class = $class;
-        $this->key = $key;
+        $this->foreignKey = $foreignKey;
+        $this->localKey = $localKey;
         $this->many = $many;
         $this->table = $table;
     }
@@ -123,8 +141,15 @@ final class Relationship implements RelationInterface {
     /**
      * {@inheritDoc}
      */
-    public function keyName(): string {
-        return $this->key;
+    public function foreignKeyName(): string {
+        return $this->foreignKey;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function localKeyName(): string {
+        return $this->localKey;
     }
 
     /**
@@ -140,22 +165,19 @@ final class Relationship implements RelationInterface {
  *
  * @subpackage WabiORM.ORM
  * @param string $related The reference to the related class 
- * @param object $model The instance to load the relation for
- * @param callable $connection
+ * @param object $model The reference of the class to load the relation for
  * @return object|null
  */
-function belongs_to(string $related, object $model, callable $connection = null) {
-    $connection = reader($connection);
-
+function belongs_to(string $related, string $model): RelationInterface {
     $info = model_info_cached($related);
 
-    $query = q('select * from {*table} where {*key} = {id}', [
-        'id' => $model->{$info->relationKey()},
-        'key' => $info->primaryKey(),
-        'table' => $info->tableName(),
-    ]);
-
-    return first(hydrate($related, $connection(...$query)));
+    return new Relationship(
+        $related,
+        $info->relationKey(),
+        $info->primaryKey(),
+        $info->tableName(), 
+        false
+    );
 }
 
 /**
@@ -281,9 +303,14 @@ function find_last(string $model, callable $connection = null) {
 function find_related(RelationInterface $relation, array $models, callable $connection = null) {
     $connection = reader($connection);
 
-    $key = $relation->keyName();
-    $ids = map($models, function ($model) use ($key) {
-        return $model->$key;
+    $key = $relation->foreignKeyName();
+    $ids = map($models, function ($model) use ($relation) {
+        // Allow users to be able to specify raw ids rather than through models.
+        if (\is_scalar($model)) {
+            return $model;
+        }
+
+        return $model->{$relation->localKeyName()};
     });
 
     $query = q("select * from {*table} where {=$key}", [
@@ -305,23 +332,19 @@ function find_related(RelationInterface $relation, array $models, callable $conn
  *
  * @subpackage WabiORM.ORM
  * @param string $related The reference to the related class
- * @param object $model The instance to load the relation for
- * @param callable $connection
+ * @param object $model The reference to the class to load the relation for
  * @return object[]
  */
-function has_many(string $related, object $model, callable $connection = null) {
-    $connection = reader($connection);
-
+function has_many(string $related, string $model): RelationInterface {
     $modelInfo = model_info_cached($model);
     $relatedInfo = model_info_cached($related);
 
-    $query = q('select * from {*table} where {*key} = {id}', [
-        'id' => $model->{$modelInfo->primaryKey()},
-        'key' => $modelInfo->relationKey(),
-        'table' => $relatedInfo->tableName(),
-    ]);
-
-    return hydrate($related, $connection(...$query));
+    return new Relationship(
+        $related,
+        $modelInfo->primaryKey(),
+        $modelInfo->relationKey(), 
+        $relatedInfo->tableName(),
+    );
 }
 
 /**
@@ -329,12 +352,20 @@ function has_many(string $related, object $model, callable $connection = null) {
  *
  * @subpackage WabiORM.ORM
  * @param string $related The reference to the related class
- * @param object $model The instance to load the relation for
- * @param callable $connection
+ * @param object $model The reference to the class to load the relation for
  * @return object|null
  */
-function has_one(string $related, object $model, callable $connection = null) {
-    return first(has_many($related, $model, $connection));
+function has_one(string $related, string $model): RelationInterface {
+    $modelInfo = model_info_cached($model);
+    $relatedInfo = model_info_cached($related);
+
+    return new Relationship(
+        $related,
+        $modelInfo->primaryKey(),
+        $modelInfo->relationKey(), 
+        $relatedInfo->tableName(), 
+        false
+    );
 }
 
 /**
