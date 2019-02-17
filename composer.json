@@ -29,7 +29,6 @@
     },
     "autoload": {
         "files": [
-            "library/bench.php",
             "library/connect.php",
             "library/connectors.php",
             "library/globals.php",
