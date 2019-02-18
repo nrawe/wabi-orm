@@ -322,11 +322,7 @@ function find_related(RelationInterface $relation, $models, callable $connection
 
     $data = hydrate($relation->className(), $connection(...$query));
 
-    if ($relation->isOne()) {
-        $data = first($data);
-    }
-
-    return $data;
+    return $relation->isOne() ? first($data) : $data;
 }
 
 /**
