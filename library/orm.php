@@ -303,18 +303,16 @@ function find_last(string $model, callable $connection = null) {
 function find_related(RelationInterface $relation, $models, callable $connection = null) {
     $connection = reader($connection);
 
-    $models = to_array($models);
-
-    $key = $relation->foreignKeyName();
-    $ids = map($models, function ($model) use ($relation) {
+    $ids = map(to_array($models), function ($model) use ($relation) {
         // Allow users to be able to specify raw ids rather than through models.
         if (\is_scalar($model)) {
             return $model;
         }
-
+        
         return $model->{$relation->localKeyName()};
     });
-
+    
+    $key = $relation->foreignKeyName();
     $query = q("select * from {*table} where {=$key}", [
         $key => $ids,
         'table' => $relation->tableName(),
