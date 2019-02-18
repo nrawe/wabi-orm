@@ -394,9 +394,7 @@ function splat_processor(): callable {
  * @return array
  */
 function compound_condition(string $field, $values, string $op): array {
-    if (! is_array($values)) {
-        $values = [$values];
-    }
+    $values = to_array($values);
 
     $condition = '';
 

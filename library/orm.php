@@ -296,12 +296,14 @@ function find_last(string $model, callable $connection = null) {
  * 
  * @subpackage WabiORM.ORM
  * @param RelationInterface $relation
- * @param array $models
+ * @param array|object|scalar $models
  * @param callable $connection
  * @return object[]
  */
-function find_related(RelationInterface $relation, array $models, callable $connection = null) {
+function find_related(RelationInterface $relation, $models, callable $connection = null) {
     $connection = reader($connection);
+
+    $models = to_array($models);
 
     $key = $relation->foreignKeyName();
     $ids = map($models, function ($model) use ($relation) {

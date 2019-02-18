@@ -166,6 +166,18 @@ function snake($value, $delimiter = '_') {
 }
 
 /**
+ * Marshalls the given value into an array.
+ *
+ * @internal
+ * @subpackage WabiORM.Utilities
+ * @param [type] $value
+ * @return array
+ */
+function to_array($value): array {
+    return is_array($value) ? $value : [$value];
+}
+
+/**
  * Returns whether the given query executed successfully.
  *
  * @internal
