@@ -20,6 +20,8 @@ describe('Integration tests', function () {
     it('allows connection', function () {
         WabiORM\global_read(connection());
         WabiORM\global_write(connection());
+
+        expect(true)->toBeTruthy();
     });
 
     it('allows for getting a record', function () {
