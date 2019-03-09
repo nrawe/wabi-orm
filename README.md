@@ -3,6 +3,7 @@
 WabiORM is a minimalist, (near) zero-config object-relational mapper.
 
 <p align="center">
+
 [![Build Status](https://travis-ci.org/nrawe/wabi-orm.svg?branch=master)](https://travis-ci.org/nrawe/wabi-orm/)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/ffc2dcd245a296b0f55a/maintainability)](https://codeclimate.com/github/nrawe/wabi-orm/maintainability)
