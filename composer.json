@@ -40,6 +40,6 @@
     },
     "scripts": {
         "test": "kahlan",
-        "test:coverage": "phpdbg -qrr vendor/bin/kahlan --coverage=4 --clover='coverage/clover.xml' --src='library'"
+        "test:coverage": "phpdbg -qrr vendor/bin/kahlan --coverage=4 --clover='clover.xml' --src='library'"
     }
 }
