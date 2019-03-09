@@ -3,12 +3,17 @@
 WabiORM is a minimalist, (near) zero-config object-relational mapper.
 
 <p align="center">
+<a href="https://travis-ci.org/nrawe/wabi-orm">
+    <img src="https://travis-ci.org/nrawe/wabi-orm.svg" alt="Build Status" />
+</a>
 
-[![Build Status](https://travis-ci.org/nrawe/wabi-orm.svg?branch=master)](https://travis-ci.org/nrawe/wabi-orm/)
+<a href="https://codeclimate.com/github/nrawe/wabi-orm/maintainability">
+    <img src="https://api.codeclimate.com/v1/badges/ffc2dcd245a296b0f55a/maintainability" alt="Maintainability" />
+</a>
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/ffc2dcd245a296b0f55a/maintainability)](https://codeclimate.com/github/nrawe/wabi-orm/maintainability)
-
-[![Test Coverage](https://api.codeclimate.com/v1/badges/ffc2dcd245a296b0f55a/test_coverage)](https://codeclimate.com/github/nrawe/wabi-orm/test_coverage)
+<a href="https://codeclimate.com/github/nrawe/wabi-orm/test_coverage">
+    <img src="https://api.codeclimate.com/v1/badges/ffc2dcd245a296b0f55a/test_coverage" alt="Coverage" />
+</a>
 </p>
 
 ## Rationale
