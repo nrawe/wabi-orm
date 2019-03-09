@@ -21,7 +21,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "php": ">=7.2"
+        "php": ">=7.3"
     },
     "require-dev": {
         "eloquent/phony-kahlan": "^2.0",
