@@ -41,7 +41,7 @@ Query
 - Add the ability to perform conditional sections
 
 ORM
-- Rebuild the relationship system
+- ~Rebuild the relationship system~
 - Add `has_one_through()`
 - Add `has_many_through()`
 - Add `associate()`
@@ -49,4 +49,4 @@ ORM
 
 Tests
 - SQLite integration test suite?
-- Continuous Integration
+- ~Continuous Integration~
