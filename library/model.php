@@ -6,6 +6,8 @@ declare(strict_types=1);
  */
 namespace WabiORM;
 
+use function ICanBoogie\{pluralize, singularize};
+
 /**
  * Resource which contains information about a model.
  */
@@ -243,7 +245,7 @@ function model_data_for_update(object $model): array {
 function model_default_table_name($model): string {
     $base = class_basename($model);
 
-    return snake($base) . 's';
+    return pluralize(snake($base));
 }
 
 /**
@@ -255,7 +257,7 @@ function model_default_table_name($model): string {
  * @return string
  */
 function model_default_relation_key($model): string {
-    return snake(class_basename($model)) . '_id';
+    return singularize(snake(class_basename($model))) . '_id';
 }
 
 /**

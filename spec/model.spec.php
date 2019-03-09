@@ -44,8 +44,8 @@ describe('model_info()', function () {
         $info = model_info(new ModelWithoutOverrides);
 
         expect($info->primaryKey())->toEqual('id');
-        expect($info->relationKey())->toEqual('model_without_overrides_id');
-        expect($info->tableName())->toEqual('model_without_overridess');
+        expect($info->relationKey())->toEqual('model_without_override_id');
+        expect($info->tableName())->toEqual('model_without_overrides');
     });
 
     it('returns the primary key stated on the object', function () {
