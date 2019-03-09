@@ -39,6 +39,7 @@
         ]
     },
     "scripts": {
-        "test": "kahlan"
+        "test": "kahlan",
+        "test:coverage": "phpdbg -qrr vendor/bin/kahlan --coverage=4 --clover='coverage/clover.xml' --src='library'"
     }
 }
